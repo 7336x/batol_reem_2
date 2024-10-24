@@ -55,14 +55,14 @@ class MeditationHomePage extends StatefulWidget {
 class _MeditationHomePageState extends State<MeditationHomePage> {
   int _selectedIndex = 0;
 
-  static const List<Widget> _pages = <Widget>[
-    Center(
-        child: Text('Relaxation Meditation', style: TextStyle(fontSize: 24))),
-    Center(
-        child: Text('Mindfulness Meditation', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Breathing Meditation', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Sleep Meditation', style: TextStyle(fontSize: 24))),
-  ];
+  // static const List<Widget> _pages = <Widget>[
+  //   Center(
+  //       child: Text('Relaxation Meditation', style: TextStyle(fontSize: 24))),
+  //   Center(
+  //       child: Text('Mindfulness Meditation', style: TextStyle(fontSize: 24))),
+  //   Center(child: Text('Breathing Meditation', style: TextStyle(fontSize: 24))),
+  //   Center(child: Text('Sleep Meditation', style: TextStyle(fontSize: 24))),
+  // ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -77,9 +77,10 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
         title: Text(
           'Meditation Time',
           style: GoogleFonts.lora(
-            fontSize: 24,
+            fontSize: 35,
             fontWeight: FontWeight.w600, // SemiBold
             fontStyle: FontStyle.italic, // Italic style
+            color: Colors.white,
           ),
         ),
         toolbarHeight: 180, // Increased AppBar height
@@ -152,41 +153,41 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                _buildMeditationCard(context, 'Relaxation', Icons.spa),
+                _buildMeditationCard(context, 'Tips', Icons.tips_and_updates),
                 _buildMeditationCard(
-                    context, 'Mindfulness', Icons.self_improvement),
-                _buildMeditationCard(context, 'Breathing', Icons.air),
-                _buildMeditationCard(context, 'Sleep', Icons.bed),
+                    context, 'Yoga video', Icons.self_improvement),
+                _buildMeditationCard(context, 'Music', Icons.music_note),
+                _buildMeditationCard(context, 'Meditation', Icons.spa),
               ],
             ),
           ),
           const SizedBox(height: 20),
-          Expanded(
-            child: _pages[_selectedIndex], // Display selected page content
-          ),
+          // Expanded(
+          //   child: _pages[_selectedIndex], // Display selected page content
+          // ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon:
-                Icon(Icons.spa, color: Colors.blueAccent), // Changed icon color
-            label: 'Relaxation',
+            icon: Icon(Icons.tips_and_updates,
+                color: Colors.blueAccent), // Changed icon color
+            label: 'Tips',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.self_improvement,
                 color: Colors.blueAccent), // Changed icon color
-            label: 'Mindfulness',
+            label: 'Yoga video',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.music_note,
+                color: Colors.blueAccent), // Changed icon color
+            label: 'Music',
           ),
           BottomNavigationBarItem(
             icon:
-                Icon(Icons.air, color: Colors.blueAccent), // Changed icon color
-            label: 'Breathing',
-          ),
-          BottomNavigationBarItem(
-            icon:
-                Icon(Icons.bed, color: Colors.blueAccent), // Changed icon color
-            label: 'Sleep',
+                Icon(Icons.spa, color: Colors.blueAccent), // Changed icon color
+            label: 'Meditation',
           ),
         ],
         currentIndex: _selectedIndex,
