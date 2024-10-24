@@ -34,6 +34,26 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
     setState(() {
       _selectedIndex = index;
     });
+
+    // Navigate to different pages based on the selected index
+    switch (index) {
+      case 0:
+        // Tips page
+        break;
+      case 1:
+        // Yoga video page
+        break;
+      case 2:
+        // Music page
+        break;
+      case 3:
+        // Meditation page
+        break;
+      case 4:
+        // Navigate to Profile page
+        GoRouter.of(context).push('/profile');
+        break;
+    }
   }
 
   @override
@@ -172,6 +192,10 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.spa, color: Colors.blueAccent),
             label: 'Meditation',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person, color: Colors.blueAccent),
+            label: 'Profile', // New Profile button
           ),
         ],
         currentIndex: _selectedIndex,
