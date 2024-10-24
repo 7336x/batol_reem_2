@@ -123,34 +123,37 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
           ),
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
               'Focus on your Inner Peace',
               style: TextStyle(
                 fontSize: 26, // Larger text size
                 fontWeight: FontWeight.bold,
               ),
             ),
-          ),
-          const SizedBox(height: 20),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                _buildMeditationCard(context, 'Tips', Icons.tips_and_updates),
-                _buildMeditationCard(
-                    context, 'Yoga video', Icons.self_improvement),
-                _buildMeditationCard(context, 'Music', Icons.music_note),
-                _buildMeditationCard(context, 'Meditation', Icons.spa),
-              ],
+            const SizedBox(height: 20),
+            // GridView for meditation cards
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: 2, // Number of columns in the grid
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                crossAxisSpacing: 16.0, // Space between columns
+                mainAxisSpacing: 16.0, // Space between rows
+                children: [
+                  _buildMeditationCard(context, 'Tips', Icons.tips_and_updates),
+                  _buildMeditationCard(
+                      context, 'Yoga video', Icons.self_improvement),
+                  _buildMeditationCard(context, 'Music', Icons.music_note),
+                  _buildMeditationCard(context, 'Meditation', Icons.spa),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -186,7 +189,6 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
         borderRadius: BorderRadius.circular(15),
       ),
       child: Container(
-        width: 180,
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
