@@ -1,34 +1,8 @@
-// import 'package:batol_reem_2/providers/auth_provider.dart';
-// import 'package:flutter/material.dart';
-// import 'package:go_router/go_router.dart';
-// import 'package:provider/provider.dart';
-
-// class HomePage extends StatelessWidget {
-//   const HomePage({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text("Home"),
-//       ),
-
-//       body: const Center(
-//         child: Text("Welcome to the Home Page"),
-//       ),
-//     );
-//   }
-// }
 import 'package:batol_reem_2/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-// // TODO Delete this
-// void main() {
-//   runApp(const HomePage());
-// }
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -36,6 +10,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Meditation Home Page',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -54,15 +29,6 @@ class MeditationHomePage extends StatefulWidget {
 
 class _MeditationHomePageState extends State<MeditationHomePage> {
   int _selectedIndex = 0;
-
-  // static const List<Widget> _pages = <Widget>[
-  //   Center(
-  //       child: Text('Relaxation Meditation', style: TextStyle(fontSize: 24))),
-  //   Center(
-  //       child: Text('Mindfulness Meditation', style: TextStyle(fontSize: 24))),
-  //   Center(child: Text('Breathing Meditation', style: TextStyle(fontSize: 24))),
-  //   Center(child: Text('Sleep Meditation', style: TextStyle(fontSize: 24))),
-  // ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -83,7 +49,7 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
             color: Colors.white,
           ),
         ),
-        toolbarHeight: 180, // Increased AppBar height
+        toolbarHeight: 400, // Increased AppBar height
         centerTitle: true,
         backgroundColor: Colors.blueAccent,
       ),
@@ -97,12 +63,23 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
                       padding: EdgeInsets.zero,
                       children: [
                         DrawerHeader(
-                          decoration: const BoxDecoration(color: Colors.blue),
-                          child: Text("Welcome ${authProvider.user.username}"),
+                          decoration: const BoxDecoration(
+                            color: Colors.transparent, // Transparent header
+                          ),
+                          child: Text(
+                            "Welcome ${authProvider.user.username}",
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                         ListTile(
-                          leading: const Icon(Icons.logout),
-                          title: const Text('Signout'),
+                          leading: const Icon(Icons.logout,
+                              color: Colors.blueAccent),
+                          title: const Text(
+                            'Signout',
+                            style: TextStyle(
+                                color: Colors.blueAccent,
+                                fontWeight: FontWeight.bold),
+                          ),
                           onTap: () {
                             authProvider.signout();
                             GoRouter.of(context)
@@ -115,16 +92,27 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
                       padding: EdgeInsets.zero,
                       children: [
                         ListTile(
-                          trailing: const Icon(Icons.person_add),
-                          title: const Text('Signup'),
+                          trailing: const Icon(Icons.person_add,
+                              color: Colors.blueAccent),
+                          title: const Text(
+                            'Signup',
+                            style: TextStyle(
+                                color: Colors.blueAccent,
+                                fontWeight: FontWeight.bold),
+                          ),
                           onTap: () {
-                            // Navigate to the signup page
                             GoRouter.of(context).push('/signup');
                           },
                         ),
                         ListTile(
-                          title: const Text("Signin"),
-                          trailing: const Icon(Icons.login),
+                          title: const Text(
+                            "Signin",
+                            style: TextStyle(
+                                color: Colors.blueAccent,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          trailing:
+                              const Icon(Icons.login, color: Colors.blueAccent),
                           onTap: () {
                             GoRouter.of(context).push('/signin');
                           },
@@ -162,31 +150,24 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
             ),
           ),
           const SizedBox(height: 20),
-          // Expanded(
-          //   child: _pages[_selectedIndex], // Display selected page content
-          // ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.tips_and_updates,
-                color: Colors.blueAccent), // Changed icon color
+            icon: Icon(Icons.tips_and_updates, color: Colors.blueAccent),
             label: 'Tips',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.self_improvement,
-                color: Colors.blueAccent), // Changed icon color
+            icon: Icon(Icons.self_improvement, color: Colors.blueAccent),
             label: 'Yoga video',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.music_note,
-                color: Colors.blueAccent), // Changed icon color
+            icon: Icon(Icons.music_note, color: Colors.blueAccent),
             label: 'Music',
           ),
           BottomNavigationBarItem(
-            icon:
-                Icon(Icons.spa, color: Colors.blueAccent), // Changed icon color
+            icon: Icon(Icons.spa, color: Colors.blueAccent),
             label: 'Meditation',
           ),
         ],
@@ -200,24 +181,22 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
   Widget _buildMeditationCard(
       BuildContext context, String title, IconData icon) {
     return Card(
-      margin: const EdgeInsets.symmetric(
-          horizontal: 12.0), // Slightly larger margin
+      margin: const EdgeInsets.symmetric(horizontal: 12.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
       child: Container(
-        width: 180, // Increased card width
-        padding: const EdgeInsets.all(20.0), // Increased padding
+        width: 180,
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(icon,
-                size: 50, color: Colors.blueAccent), // Increased icon size
+            Icon(icon, size: 50, color: Colors.blueAccent),
             const SizedBox(height: 12),
             Text(
               title,
               style: const TextStyle(
-                fontSize: 20, // Larger text size
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
