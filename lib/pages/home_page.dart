@@ -193,7 +193,7 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
                 height: 300,
                 child: ClipRect(
                   child: Image.asset(
-                    'image/yoga_girl.png',
+                    'assets/image/yoga_girl.png',
                     fit: BoxFit.cover,
                     width: double.infinity,
                   ),
