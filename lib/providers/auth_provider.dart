@@ -9,31 +9,39 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider extends ChangeNotifier {
   String token = "";
-  late User user;
+  late User user; // Keep track of the user
 
-  void signup({required User user}) async {
-    // token = await AuthServices().signup(user: user);
-    // print(token);
-    token = await AuthServices().signup(user: user);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('token', token);
-    setToken(token);
-    notifyListeners();
+  Future<bool> signup({required User user}) async {
+    try {
+      token = await AuthServices().signup(user: user);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', token);
+      setToken(token);
+      this.user = user; // Save user details after signup
+      notifyListeners();
+      return true; // Signup successful
+    } catch (e) {
+      // Handle exceptions (e.g., show an error message)
+      return false; // Signup failed
+    }
   }
 
-  void signin({required User user}) async {
-    // token = await AuthServices().signin(user: user);
-    // print(token);
-    // notifyListeners();
-    token = await AuthServices().signin(user: user);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('token', token);
-    setToken(token);
-    notifyListeners();
+  Future<bool> signin({required User user}) async {
+    try {
+      token = await AuthServices().signin(user: user);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', token);
+      setToken(token);
+      this.user = user; // Save user details after signin
+      notifyListeners();
+      return true; // Signin successful
+    } catch (e) {
+      // Handle exceptions (e.g., show an error message)
+      return false; // Signin failed
+    }
   }
 
   bool isAuth() {
-    // checking the expiry
     if (token.isNotEmpty && !Jwt.isExpired(token)) {
       user = User.fromJson(Jwt.parseJwt(token));
       DioClient.client.options.headers = {
@@ -41,7 +49,6 @@ class AuthProvider extends ChangeNotifier {
       };
       return true;
     }
-
     return false;
   }
 
@@ -58,10 +65,10 @@ class AuthProvider extends ChangeNotifier {
 
   void setToken(String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('token', token);
+    await prefs.setString('token', token);
   }
 
-  Future getToken() async {
+  Future<void> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     token = prefs.getString('token') ?? "";
     notifyListeners();

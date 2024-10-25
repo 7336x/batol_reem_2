@@ -9,14 +9,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Meditation Home Page',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MeditationHomePage(),
-    );
+    return const MeditationHomePage();
   }
 }
 
@@ -31,175 +24,231 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
-    // Navigate to different pages based on the selected index
-    switch (index) {
-      case 0:
-        // Tips page
-        break;
-      case 1:
-        // Yoga video page
-        break;
-      case 2:
-        // Music page
-        break;
-      case 3:
-        // Meditation page
-        break;
-      case 4:
-        // Navigate to Profile page
-        GoRouter.of(context).push('/profile');
-        break;
+    if (authProvider.isAuth()) {
+      setState(() {
+        _selectedIndex = index;
+      });
+      // Navigate to pages directly
+      switch (index) {
+        case 0:
+          GoRouter.of(context).push('/tips');
+          break;
+        case 1:
+          GoRouter.of(context).push('/yoga');
+          break;
+        case 2:
+          GoRouter.of(context).push('/music');
+          break;
+        case 3:
+          GoRouter.of(context).push('/meditation');
+          break;
+        case 4:
+          GoRouter.of(context).push('/profile');
+          break;
+      }
+    } else {
+      _showAuthMessage(context);
+    }
+  }
+
+  void _showAuthMessage(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    if (!authProvider.isAuth()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text(
+            'You should sign in or sign up, click here or on the drawer.',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          action: SnackBarAction(
+            label: 'Sign In',
+            onPressed: () {
+              GoRouter.of(context).push('/signin');
+            },
+          ),
+        ),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 232, 192, 226),
       appBar: AppBar(
         title: Text(
           'Meditation Time',
           style: GoogleFonts.lora(
             fontSize: 35,
-            fontWeight: FontWeight.w600, // SemiBold
-            fontStyle: FontStyle.italic, // Italic style
-            color: Colors.white,
+            fontWeight: FontWeight.w600,
+            fontStyle: FontStyle.italic,
+            color: const Color.fromARGB(255, 118, 18, 52),
           ),
         ),
-        toolbarHeight: 400, // Increased AppBar height
+        toolbarHeight: 100,
         centerTitle: true,
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
       drawer: Drawer(
         child: SafeArea(
           child: FutureBuilder(
             future: context.read<AuthProvider>().initializeAuth(),
             builder: (context, dataSnapshot) => Consumer<AuthProvider>(
-              builder: (context, authProvider, child) => authProvider.isAuth()
-                  ? ListView(
-                      padding: EdgeInsets.zero,
-                      children: [
-                        DrawerHeader(
-                          decoration: const BoxDecoration(
-                            color: Colors.transparent, // Transparent header
+              builder: (context, authProvider, child) {
+                return ListView(
+                  padding: EdgeInsets.zero,
+                  children: authProvider.isAuth()
+                      ? [
+                          DrawerHeader(
+                            decoration: const BoxDecoration(
+                              color: Colors.transparent,
+                            ),
+                            child: Text(
+                              "Welcome ${authProvider.user.username}",
+                              style: GoogleFonts.lora(
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                                color: const Color.fromARGB(255, 118, 18, 52),
+                              ),
+                            ),
                           ),
-                          child: Text(
-                            "Welcome ${authProvider.user.username}",
-                            style: TextStyle(color: Colors.white),
+                          ListTile(
+                            leading: const Icon(Icons.logout,
+                                color: Color.fromARGB(255, 118, 18, 52)),
+                            title: const Text(
+                              'Signout',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 118, 18, 52),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                            onTap: () {
+                              authProvider.signout();
+                              GoRouter.of(context).pop();
+                            },
                           ),
-                        ),
-                        ListTile(
-                          leading: const Icon(Icons.logout,
-                              color: Colors.blueAccent),
-                          title: const Text(
-                            'Signout',
-                            style: TextStyle(
-                                color: Colors.blueAccent,
-                                fontWeight: FontWeight.bold),
+                        ]
+                      : [
+                          ListTile(
+                            trailing: const Icon(Icons.person_add,
+                                color: Color.fromARGB(255, 118, 18, 52)),
+                            title: const Text(
+                              'Signup',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 118, 18, 52),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24,
+                              ),
+                            ),
+                            onTap: () {
+                              GoRouter.of(context).push('/signup');
+                            },
                           ),
-                          onTap: () {
-                            authProvider.signout();
-                            GoRouter.of(context)
-                                .pop(); // Pop back to the home page
-                          },
-                        ),
-                      ],
-                    )
-                  : ListView(
-                      padding: EdgeInsets.zero,
-                      children: [
-                        ListTile(
-                          trailing: const Icon(Icons.person_add,
-                              color: Colors.blueAccent),
-                          title: const Text(
-                            'Signup',
-                            style: TextStyle(
-                                color: Colors.blueAccent,
-                                fontWeight: FontWeight.bold),
+                          ListTile(
+                            title: const Text(
+                              "Signin",
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 118, 18, 52),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24,
+                              ),
+                            ),
+                            trailing: const Icon(Icons.login,
+                                color: Color.fromARGB(255, 118, 18, 52)),
+                            onTap: () {
+                              GoRouter.of(context).push('/signin');
+                            },
                           ),
-                          onTap: () {
-                            GoRouter.of(context).push('/signup');
-                          },
-                        ),
-                        ListTile(
-                          title: const Text(
-                            "Signin",
-                            style: TextStyle(
-                                color: Colors.blueAccent,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          trailing:
-                              const Icon(Icons.login, color: Colors.blueAccent),
-                          onTap: () {
-                            GoRouter.of(context).push('/signin');
-                          },
-                        ),
-                      ],
-                    ),
+                        ],
+                );
+              },
             ),
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Focus on your Inner Peace',
-              style: TextStyle(
-                fontSize: 26, // Larger text size
-                fontWeight: FontWeight.bold,
+      body: GestureDetector(
+        onTap: () {
+          _showAuthMessage(context);
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Focus on your Inner Peace',
+                style: GoogleFonts.lora(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.italic,
+                  color: const Color.fromARGB(255, 118, 18, 52),
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            // GridView for meditation cards
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 2, // Number of columns in the grid
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
-                crossAxisSpacing: 16.0, // Space between columns
-                mainAxisSpacing: 16.0, // Space between rows
-                children: [
-                  _buildMeditationCard(context, 'Tips', Icons.tips_and_updates),
-                  _buildMeditationCard(
-                      context, 'Yoga video', Icons.self_improvement),
-                  _buildMeditationCard(context, 'Music', Icons.music_note),
-                  _buildMeditationCard(context, 'Meditation', Icons.spa),
-                ],
+              const SizedBox(height: 20),
+              Container(
+                height: 300,
+                child: ClipRect(
+                  child: Image.asset(
+                    'image/yoga_girl.png',
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                  ),
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 20),
+              Expanded(
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  crossAxisSpacing: 16.0,
+                  mainAxisSpacing: 16.0,
+                  children: [
+                    _buildMeditationCard(
+                        context, 'Tips', Icons.tips_and_updates),
+                    _buildMeditationCard(
+                        context, 'Yoga video', Icons.self_improvement),
+                    _buildMeditationCard(context, 'Music', Icons.music_note),
+                    _buildMeditationCard(context, 'Meditation', Icons.spa),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.tips_and_updates, color: Colors.blueAccent),
+            icon: Icon(Icons.tips_and_updates,
+                color: Color.fromARGB(255, 118, 18, 52)),
             label: 'Tips',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.self_improvement, color: Colors.blueAccent),
+            icon: Icon(Icons.self_improvement,
+                color: Color.fromARGB(255, 118, 18, 52)),
             label: 'Yoga video',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.music_note, color: Colors.blueAccent),
+            icon:
+                Icon(Icons.music_note, color: Color.fromARGB(255, 118, 18, 52)),
             label: 'Music',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.spa, color: Colors.blueAccent),
+            icon: Icon(Icons.spa, color: Color.fromARGB(255, 118, 18, 52)),
             label: 'Meditation',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person, color: Colors.blueAccent),
-            label: 'Profile', // New Profile button
+            icon: Icon(Icons.person, color: Color.fromARGB(255, 118, 18, 52)),
+            label: 'Profile',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blueAccent,
+        selectedItemColor: const Color.fromARGB(255, 118, 18, 52),
+        unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
       ),
     );
@@ -212,21 +261,32 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
-      child: Container(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(icon, size: 50, color: Colors.blueAccent),
-            const SizedBox(height: 12),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+      child: GestureDetector(
+        onTap: () {
+          final authProvider =
+              Provider.of<AuthProvider>(context, listen: false);
+          if (!authProvider.isAuth()) {
+            _showAuthMessage(context);
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(icon,
+                  size: 50, color: const Color.fromARGB(255, 118, 18, 52)),
+              const SizedBox(height: 20),
+              Text(
+                title,
+                style: GoogleFonts.lora(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: const Color.fromARGB(255, 118, 18, 52),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
