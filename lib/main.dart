@@ -1,5 +1,7 @@
 import 'package:batol_reem_2/pages/Profile_page.dart';
+import 'package:batol_reem_2/pages/tips.dart';
 import 'package:flutter/material.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:batol_reem_2/providers/auth_provider.dart';
@@ -49,6 +51,10 @@ class MyApp extends StatelessWidget {
       GoRoute(
         path: '/profile', // Route to the profile page
         builder: (context, state) => ProfilePage(),
+      ),
+      GoRoute(
+        path: '/tips', // Route to the profile page
+        builder: (context, state) => Tips(),
       ),
     ],
   );
