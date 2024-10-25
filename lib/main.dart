@@ -1,20 +1,31 @@
-import 'package:batol_reem_2/pages/Profile_page.dart';
-import 'package:batol_reem_2/pages/tips.dart';
 import 'package:flutter/material.dart';
-
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:batol_reem_2/providers/auth_provider.dart';
-import 'package:batol_reem_2/pages/home_page.dart';
-import 'package:batol_reem_2/pages/signin_page.dart';
-import 'package:batol_reem_2/pages/signup_page.dart';
-// Import the profile page
+import 'package:dio/dio.dart';
+import 'pages/home_page.dart';
+import 'pages/profile_page.dart';
+import 'pages/signin_page.dart';
+import 'pages/signup_page.dart';
+import 'pages/music_page.dart'; // Import MusicPage
+import 'pages/tipsListPage.dart';
+import 'pages/tips.dart'; // This should be your Tips page
+import 'providers/auth_provider.dart';
+import 'services/tips_services.dart'; // Import TipService
+import 'services/yoga_music_service.dart'; // Import YogaMusicService
+import 'providers/yoga_music_provider.dart'; // Import YogaMusicProvider
+import 'pages/ meditation_page.dart';
+import 'pages/create_yoga_music_page.dart';
+import 'pages/yoga_page.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
+        Provider<TipService>(create: (_) => TipService(Dio())), // Provide TipService
+        ChangeNotifierProvider<YogaMusicProvider>(
+          create: (_) => YogaMusicProvider(YogaMusicService(Dio())), // Provide YogaMusicProvider
+        ),
       ],
       child: MyApp(),
     ),
@@ -34,7 +45,7 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  final _router = GoRouter(
+  final GoRouter _router = GoRouter(
     routes: [
       GoRoute(
         path: '/',
@@ -53,8 +64,24 @@ class MyApp extends StatelessWidget {
         builder: (context, state) => ProfilePage(),
       ),
       GoRoute(
-        path: '/tips', // Route to the profile page
+        path: '/yoga',
+        builder: (context, state) => YogaPage(),
+      ),
+      GoRoute(
+        path: '/music',
+        builder: (context, state) => MusicPage(),
+      ),
+      GoRoute(
+        path: '/meditation',
+        builder: (context, state) => MeditationPage(),
+      ),
+      GoRoute(
+        path: '/tips', // Route to the Tips page
         builder: (context, state) => Tips(),
+      ),
+      GoRoute(
+        path: '/tipslist', // Route to the TipsListPage
+        builder: (context, state) => TipsListPage(),
       ),
     ],
   );

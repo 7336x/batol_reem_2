@@ -207,12 +207,10 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
                   crossAxisSpacing: 16.0,
                   mainAxisSpacing: 16.0,
                   children: [
-                    _buildMeditationCard(
-                        context, 'Tips', Icons.tips_and_updates),
-                    _buildMeditationCard(
-                        context, 'Yoga video', Icons.self_improvement),
-                    _buildMeditationCard(context, 'Music', Icons.music_note),
-                    _buildMeditationCard(context, 'Meditation', Icons.spa),
+                    _buildMeditationCard(context, 'Tips', Icons.tips_and_updates, 'assets/image/tips_image2.jpeg'),
+                    _buildMeditationCard(context, 'Yoga', Icons.self_improvement, 'assets/image/yoga_pose.png'),
+                    _buildMeditationCard(context, 'Music', Icons.music_note, 'assets/image/music_image2.jpeg'),
+                    _buildMeditationCard(context, 'Meditation', Icons.spa, 'assets/image/meditation_image1.jpg'),
                   ],
                 ),
               ),
@@ -233,8 +231,8 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
             label: 'Yoga video',
           ),
           BottomNavigationBarItem(
-            icon:
-                Icon(Icons.music_note, color: Color.fromARGB(255, 118, 18, 52)),
+            icon: Icon(Icons.music_note,
+                color: Color.fromARGB(255, 118, 18, 52)),
             label: 'Music',
           ),
           BottomNavigationBarItem(
@@ -254,8 +252,7 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
     );
   }
 
-  Widget _buildMeditationCard(
-      BuildContext context, String title, IconData icon) {
+  Widget _buildMeditationCard(BuildContext context, String title, IconData icon, String imagePath) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12.0),
       shape: RoundedRectangleBorder(
@@ -263,24 +260,30 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
       ),
       child: GestureDetector(
         onTap: () {
-          final authProvider =
-              Provider.of<AuthProvider>(context, listen: false);
+          final authProvider = Provider.of<AuthProvider>(context, listen: false);
           if (!authProvider.isAuth()) {
             _showAuthMessage(context);
           }
         },
         child: Container(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(10.0), // Reduced padding to avoid overflow
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(icon,
-                  size: 50, color: const Color.fromARGB(255, 118, 18, 52)),
-              const SizedBox(height: 20),
+              ClipOval(
+                child: Image.asset(
+                  imagePath,
+                  fit: BoxFit.cover,
+                  width: 60, // Adjusted width to avoid overflow
+                  height: 60, // Adjusted height to avoid overflow
+                ),
+              ),
+              const SizedBox(height: 10),
               Text(
                 title,
+                textAlign: TextAlign.center,
                 style: GoogleFonts.lora(
-                  fontSize: 24,
+                  fontSize: 20, // Reduced font size
                   fontWeight: FontWeight.bold,
                   color: const Color.fromARGB(255, 118, 18, 52),
                 ),
