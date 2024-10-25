@@ -14,7 +14,7 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json['id'],
         username: json['username'],
-        password: json['password'],
+        password: json['password'], //
         imagePath: json['imagePath'] ??
             'assets/image/default.png', // Ensure a default image is used if null
       );
