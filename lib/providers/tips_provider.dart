@@ -6,6 +6,7 @@ class TipsService {
 
   TipsService(this.dio); // Constructor to initialize Dio
 
+  // Fetching tips from the API
   Future<List<TipUi>> fetchTips() async {
     final response = await dio.get('https://coded-meditation.eapi.joincoded.com/tips');
     if (response.statusCode == 200) {
@@ -16,14 +17,15 @@ class TipsService {
     }
   }
 
-  Future<void> createTip(TipUi tip) async {
+  // Creating a new tip
+  Future<void> createTip(TipUi tip, String userToken) async {
     try {
       final response = await dio.post(
         'https://coded-meditation.eapi.joincoded.com/tips',
         data: tip.toJson(),
         options: Options(
           headers: {
-            'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // Ensure the user is authenticated
+            'Authorization': 'Bearer $userToken', // Ensure the user is authenticated
           },
         ),
       );
@@ -32,6 +34,25 @@ class TipsService {
       }
     } catch (e) {
       throw Exception('Failed to create tip: $e');
+    }
+  }
+
+  // Deleting a tip by ID
+  Future<void> deleteTip(int tipId, String userToken) async {
+    try {
+      final response = await dio.delete(
+        'https://coded-meditation.eapi.joincoded.com/tips/$tipId',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $userToken', // Ensure the user is authenticated
+          },
+        ),
+      );
+      if (response.statusCode != 204) { // 204 means No Content, indicating successful deletion
+        throw Exception('Failed to delete tip: ${response.data}');
+      }
+    } catch (e) {
+      throw Exception('Failed to delete tip: $e');
     }
   }
 }
