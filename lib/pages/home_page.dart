@@ -30,6 +30,7 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
       setState(() {
         _selectedIndex = index;
       });
+
       // Navigate to pages directly
       switch (index) {
         case 0:
@@ -190,7 +191,7 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
               ),
               const SizedBox(height: 20),
               Container(
-                height: 300,
+                height: 250, // Adjusted height to prevent overflow
                 child: ClipRect(
                   child: Image.asset(
                     'assets/image/yoga_girl.png',
@@ -207,10 +208,22 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
                   crossAxisSpacing: 16.0,
                   mainAxisSpacing: 16.0,
                   children: [
-                    _buildMeditationCard(context, 'Tips', Icons.tips_and_updates, 'assets/image/tips_image2.jpeg'),
-                    _buildMeditationCard(context, 'Yoga', Icons.self_improvement, 'assets/image/yoga_pose.png'),
-                    _buildMeditationCard(context, 'Music', Icons.music_note, 'assets/image/music_image2.jpeg'),
-                    _buildMeditationCard(context, 'Meditation', Icons.spa, 'assets/image/meditation_image1.jpg'),
+                    _buildMeditationCard(
+                        context,
+                        'Tips',
+                        Icons.tips_and_updates,
+                        'assets/image/tips_image2.jpeg',
+                        '/tips'),
+                    _buildMeditationCard(
+                        context,
+                        'Yoga',
+                        Icons.self_improvement,
+                        'assets/image/yoga_pose.png',
+                        '/yoga'),
+                    _buildMeditationCard(context, 'Music', Icons.music_note,
+                        'assets/image/music_image2.jpeg', '/music'),
+                    _buildMeditationCard(context, 'Meditation', Icons.spa,
+                        'assets/image/meditation_image1.jpg', '/meditation'),
                   ],
                 ),
               ),
@@ -231,8 +244,8 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
             label: 'Yoga video',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.music_note,
-                color: Color.fromARGB(255, 118, 18, 52)),
+            icon:
+                Icon(Icons.music_note, color: Color.fromARGB(255, 118, 18, 52)),
             label: 'Music',
           ),
           BottomNavigationBarItem(
@@ -252,7 +265,8 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
     );
   }
 
-  Widget _buildMeditationCard(BuildContext context, String title, IconData icon, String imagePath) {
+  Widget _buildMeditationCard(BuildContext context, String title, IconData icon,
+      String imagePath, String route) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12.0),
       shape: RoundedRectangleBorder(
@@ -260,32 +274,35 @@ class _MeditationHomePageState extends State<MeditationHomePage> {
       ),
       child: GestureDetector(
         onTap: () {
-          final authProvider = Provider.of<AuthProvider>(context, listen: false);
-          if (!authProvider.isAuth()) {
+          final authProvider =
+              Provider.of<AuthProvider>(context, listen: false);
+          if (authProvider.isAuth()) {
+            // Navigate to the respective route if authenticated
+            GoRouter.of(context).push(route);
+          } else {
             _showAuthMessage(context);
           }
         },
         child: Container(
-          padding: const EdgeInsets.all(10.0), // Reduced padding to avoid overflow
+          padding: const EdgeInsets.all(10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ClipOval(
                 child: Image.asset(
                   imagePath,
+                  height: 80,
+                  width: 80,
                   fit: BoxFit.cover,
-                  width: 60, // Adjusted width to avoid overflow
-                  height: 60, // Adjusted height to avoid overflow
                 ),
               ),
               const SizedBox(height: 10),
               Text(
                 title,
-                textAlign: TextAlign.center,
-                style: GoogleFonts.lora(
-                  fontSize: 20, // Reduced font size
+                style: const TextStyle(
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: const Color.fromARGB(255, 118, 18, 52),
+                  color: Color.fromARGB(255, 118, 18, 52),
                 ),
               ),
             ],

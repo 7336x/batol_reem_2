@@ -17,6 +17,9 @@ dependencies:
   provider: ^6.1.2
   shared_preferences: ^2.3.2
   google_fonts: ^4.0.3 # Check for the latest version on pub.dev
+ 
+  url_launcher: ^6.0.20  # Check for the latest version
+
 
 dev_dependencies:
   build_runner: ^2.4.13
