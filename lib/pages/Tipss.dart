@@ -117,7 +117,7 @@ class _TipsMainPageState extends State<TipsMainPage>
             children: [
               Container(height: 30),
               Image.asset(
-                'assets/image/tips_image1.avif',
+                'assets/image/tips_image2.jpeg', /////
                 width: 250,
                 height: 250,
                 fit: BoxFit.contain,

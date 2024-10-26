@@ -2,7 +2,6 @@ import 'package:batol_reem_2/models/meditation_model.dart';
 import 'package:batol_reem_2/services/meditation_service.dart';
 import 'package:flutter/material.dart';
 
-
 class MeditationPage extends StatelessWidget {
   final MeditationService meditationService = MeditationService();
 
@@ -20,7 +19,8 @@ class MeditationPage extends StatelessWidget {
           final meditation = meditationList[index];
           return Card(
             child: ListTile(
-              leading: Image.network(meditation.imageUrl),
+              leading: Image.asset(
+                  'assets/image/music_image2.jpeg'), // Use asset image here
               title: Text(meditation.title),
               subtitle: Text(meditation.description),
             ),
