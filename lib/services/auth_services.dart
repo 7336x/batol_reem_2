@@ -1,5 +1,6 @@
 import 'package:batol_reem_2/models/user.dart';
 import 'package:batol_reem_2/services/pet.dart';
+import 'package:batol_reem_2/services/tips_services.dart';
 // import 'package:batol_reem_2/services/pets.dart';
 import 'package:dio/dio.dart';
 
@@ -8,7 +9,7 @@ class AuthServices {
     late String token;
     try {
       Response response =
-          await DioClient.client.post('/signup', data: user.toJson());
+          await DioClient.dio.post('/signup', data: user.toJson());
       token = response.data["token"];
     } on DioError catch (error) {
       print(error);
@@ -20,7 +21,7 @@ class AuthServices {
     late String token;
     try {
       Response response =
-          await DioClient.client.post('/signin', data: user.toJson());
+          await DioClient.dio.post('/signin', data: user.toJson());
       token = response.data["token"];
     } on DioError catch (error) {
       print(error);

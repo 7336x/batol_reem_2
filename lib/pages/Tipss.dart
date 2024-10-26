@@ -14,13 +14,20 @@ class _TipsMainPageState extends State<TipsMainPage>
   late TabController _tabController;
   final TextEditingController _textController = TextEditingController();
   String? _errorMessage;
-  late Future<List<TipUi>> _tipsFuture;
+  Future<List<TipUi>>? _tipsFuture; // Made nullable
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    _tipsFuture = Provider.of<TipService>(context, listen: false).fetchTips();
+
+    // Access DioClient provider after the first frame is rendered
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final dioClient = Provider.of<DioClient>(context, listen: false);
+      setState(() {
+        _tipsFuture = dioClient.fetchTips();
+      });
+    });
   }
 
   @override
@@ -76,7 +83,9 @@ class _TipsMainPageState extends State<TipsMainPage>
           FutureBuilder<List<TipUi>>(
             future: _tipsFuture,
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
+              if (_tipsFuture == null) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
                 return Center(child: Text('Error: ${snapshot.error}'));

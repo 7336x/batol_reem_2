@@ -17,14 +17,14 @@ import 'pages/ meditation_page.dart';
 import 'pages/create_yoga_music_page.dart';
 import 'pages/yoga_page.dart';
 import 'pages/Tipss.dart';
+// Import the DioClient file
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
-        Provider<TipService>(
-            create: (_) => TipService(Dio())), // Provide TipService
+        Provider<DioClient>(create: (_) => (DioClient())), // Provide TipService
         ChangeNotifierProvider<YogaMusicProvider>(
           create: (_) => YogaMusicProvider(
               YogaMusicService(Dio())), // Provide YogaMusicProvider
@@ -91,4 +91,15 @@ class MyApp extends StatelessWidget {
     //   ),
     // ],
   ]);
+}
+
+class DioClient {
+  final Dio _dio = Dio();
+
+  // Example method to make a GET request
+  Future<Response> getRequest(String path) async {
+    return await _dio.get(path);
+  }
+
+  // You can add other methods like POST, PUT, DELETE, etc.
 }

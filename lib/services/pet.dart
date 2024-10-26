@@ -1,9 +1,9 @@
-import "package:dio/dio.dart";
+// import "package:dio/dio.dart";
 
-class DioClient {
-  static final _baseUrl = 'https://coded-pets-api-auth.eapi.joincoded.com';
-  static final Dio client = Dio(BaseOptions(baseUrl: _baseUrl));
-}
+// class DioClient {
+//   static final _baseUrl = 'https://coded-pets-api-auth.eapi.joincoded.com';
+//   static final Dio client = Dio(BaseOptions(baseUrl: _baseUrl));
+// }
 
 //   Future<List<Pet>> getPets() async {
 //     List<Pet> pets = [];

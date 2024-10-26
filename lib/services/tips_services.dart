@@ -1,14 +1,18 @@
 import 'package:dio/dio.dart';
 import 'package:batol_reem_2/models/tips_ui.dart';
 
-class TipService {
-  final Dio dio;
+class DioClient {
+  static final _baseUrl = 'https://coded-meditation.eapi.joincoded.com';
+  static final Dio dio = Dio(BaseOptions(baseUrl: _baseUrl));
 
-  TipService(this.dio);
+  DioClient(Dio dio);
+
+  //DioClient(this.dio);
 
   // Fetching tips from the API
   Future<List<TipUi>> fetchTips() async {
-    final response = await dio.get('https://coded-meditation.eapi.joincoded.com/tips');
+    final response =
+        await dio.get('https://coded-meditation.eapi.joincoded.com/tips');
     if (response.statusCode == 200) {
       List<dynamic> tipsJson = response.data;
       return tipsJson.map((json) => TipUi.fromJson(json)).toList();
@@ -39,7 +43,8 @@ class TipService {
         data: newTip.toJson(),
         options: Options(
           headers: {
-            'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // Ensure the user is logged in
+            'Authorization':
+                'Bearer YOUR_ACCESS_TOKEN', // Ensure the user is logged in
           },
         ),
       );

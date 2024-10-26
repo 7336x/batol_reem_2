@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:batol_reem_2/services/pet.dart';
+import 'package:batol_reem_2/services/tips_services.dart';
 import 'package:dio/dio.dart';
 import 'package:batol_reem_2/models/user.dart';
 import 'package:batol_reem_2/services/auth_services.dart';
@@ -44,7 +45,7 @@ class AuthProvider extends ChangeNotifier {
   bool isAuth() {
     if (token.isNotEmpty && !Jwt.isExpired(token)) {
       user = User.fromJson(Jwt.parseJwt(token));
-      DioClient.client.options.headers = {
+      DioClient.dio.options.headers = {
         HttpHeaders.authorizationHeader: "Bearer $token",
       };
       return true;
