@@ -7,8 +7,8 @@ import 'pages/profile_page.dart';
 import 'pages/signin_page.dart';
 import 'pages/signup_page.dart';
 import 'pages/music_page.dart'; // Import MusicPage
-import 'pages/tipsListPage.dart';
-import 'pages/tips.dart'; // This should be your Tips page
+//import 'pages/tipsListPage.dart';
+//import 'pages/tips.dart'; // This should be your Tips page
 import 'providers/auth_provider.dart';
 import 'services/tips_services.dart'; // Import TipService
 import 'services/yoga_music_service.dart'; // Import YogaMusicService
@@ -16,15 +16,18 @@ import 'providers/yoga_music_provider.dart'; // Import YogaMusicProvider
 import 'pages/ meditation_page.dart';
 import 'pages/create_yoga_music_page.dart';
 import 'pages/yoga_page.dart';
+import 'pages/Tipss.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
-        Provider<TipService>(create: (_) => TipService(Dio())), // Provide TipService
+        Provider<TipService>(
+            create: (_) => TipService(Dio())), // Provide TipService
         ChangeNotifierProvider<YogaMusicProvider>(
-          create: (_) => YogaMusicProvider(YogaMusicService(Dio())), // Provide YogaMusicProvider
+          create: (_) => YogaMusicProvider(
+              YogaMusicService(Dio())), // Provide YogaMusicProvider
         ),
       ],
       child: MyApp(),
@@ -45,44 +48,47 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  final GoRouter _router = GoRouter(
-    routes: [
-      GoRoute(
-        path: '/',
-        builder: (context, state) => HomePage(),
-      ),
-      GoRoute(
-        path: '/signup',
-        builder: (context, state) => SignupPage(),
-      ),
-      GoRoute(
-        path: '/signin',
-        builder: (context, state) => SigninPage(),
-      ),
-      GoRoute(
-        path: '/profile', // Route to the profile page
-        builder: (context, state) => ProfilePage(),
-      ),
-      GoRoute(
-        path: '/yoga',
-        builder: (context, state) => YogaPage(),
-      ),
-      GoRoute(
-        path: '/music',
-        builder: (context, state) => MusicPage(),
-      ),
-      GoRoute(
-        path: '/meditation',
-        builder: (context, state) => MeditationPage(),
-      ),
-      GoRoute(
-        path: '/tips', // Route to the Tips page
-        builder: (context, state) => Tips(),
-      ),
-      GoRoute(
-        path: '/tipslist', // Route to the TipsListPage
-        builder: (context, state) => TipsListPage(),
-      ),
-    ],
-  );
+  final GoRouter _router = GoRouter(routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => HomePage(),
+    ),
+    GoRoute(
+      path: '/signup',
+      builder: (context, state) => SignupPage(),
+    ),
+    GoRoute(
+      path: '/signin',
+      builder: (context, state) => SigninPage(),
+    ),
+    GoRoute(
+      path: '/profile', // Route to the profile page
+      builder: (context, state) => ProfilePage(),
+    ),
+    GoRoute(
+      path: '/yoga',
+      builder: (context, state) => YogaPage(),
+    ),
+    GoRoute(
+      path: '/music',
+      builder: (context, state) => MusicPage(),
+    ),
+    GoRoute(
+      path: '/meditation',
+      builder: (context, state) => MeditationPage(),
+    ),
+    GoRoute(
+      path: '/tips', // Route to the Tipss page
+      builder: (context, state) => TipsMainPage(),
+    ),
+    //   GoRoute(
+    //     path: '/tips', // Route to the Tips page
+    //     builder: (context, state) => Tips(),
+    //   ),
+    //   GoRoute(
+    //     path: '/tipslist', // Route to the TipsListPage
+    //     builder: (context, state) => TipsListPage(),
+    //   ),
+    // ],
+  ]);
 }
