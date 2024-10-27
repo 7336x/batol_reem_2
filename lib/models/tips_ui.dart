@@ -8,7 +8,7 @@ class TipUi {
   final String text; // Content of the tip
   final String author; // Author of the tip
   final List<int> upvotes; // List of upvote IDs
-  final List<int> downvotes; // List of downvote IDs
+  final List<String> downvotes; // List of downvote IDs
 
   TipUi({
     this.id,

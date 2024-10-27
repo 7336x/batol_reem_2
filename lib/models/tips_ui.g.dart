@@ -8,13 +8,13 @@ part of 'tips_ui.dart';
 
 TipUi _$TipUiFromJson(Map<String, dynamic> json) => TipUi(
       id: (json['id'] as num?)?.toInt(),
-      text: json['text'] as String,
+      text: (json['text'] ?? "") as String,
       author: json['author'] as String,
       upvotes: (json['upvotes'] as List<dynamic>)
           .map((e) => (e as num).toInt())
           .toList(),
       downvotes: (json['downvotes'] as List<dynamic>)
-          .map((e) => (e as num).toInt())
+          .map((e) => (e as String))
           .toList(),
     );
 

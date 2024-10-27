@@ -27,7 +27,7 @@ void main() {
         Provider<DioClient>(create: (_) => (DioClient())), // Provide TipService
         ChangeNotifierProvider<YogaMusicProvider>(
           create: (_) => YogaMusicProvider(
-              YogaMusicService(Dio())), // Provide YogaMusicProvider
+              YogaMusicService()), // Provide YogaMusicProvider
         ),
       ],
       child: MyApp(),
@@ -93,13 +93,13 @@ class MyApp extends StatelessWidget {
   ]);
 }
 
-class DioClient {
-  final Dio _dio = Dio();
+// class DioClient {
+//   final Dio _dio = Dio();
 
-  // Example method to make a GET request
-  Future<Response> getRequest(String path) async {
-    return await _dio.get(path);
-  }
+//   // Example method to make a GET request
+//   Future<Response> getRequest(String path) async {
+//     return await _dio.get(path);
+//   }
 
-  // You can add other methods like POST, PUT, DELETE, etc.
-}
+//   // You can add other methods like POST, PUT, DELETE, etc.
+// }

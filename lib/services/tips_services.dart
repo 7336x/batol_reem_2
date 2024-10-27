@@ -5,16 +5,15 @@ class DioClient {
   static final _baseUrl = 'https://coded-meditation.eapi.joincoded.com';
   static final Dio dio = Dio(BaseOptions(baseUrl: _baseUrl));
 
-  DioClient(Dio dio);
+  DioClient();
 
   //DioClient(this.dio);
 
   // Fetching tips from the API
   Future<List<TipUi>> fetchTips() async {
-    final response =
-        await dio.get('https://coded-meditation.eapi.joincoded.com/tips');
+    final response = await dio.get('/tips');
     if (response.statusCode == 200) {
-      List<dynamic> tipsJson = response.data;
+      List<TipUi> tipsJson = response.data;
       return tipsJson.map((json) => TipUi.fromJson(json)).toList();
     } else {
       throw Exception('Failed to load tips');

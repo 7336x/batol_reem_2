@@ -1,15 +1,16 @@
 // services/yoga_music_service.dart
+import 'package:batol_reem_2/main.dart';
+import 'package:batol_reem_2/services/tips_services.dart';
 import 'package:dio/dio.dart';
 import '../models/yoga.dart';
 
 class YogaMusicService {
-  final Dio _dio = Dio();
-
-  YogaMusicService(Dio dio); // Initialize Dio for API requests
+  YogaMusicService(); // Initialize Dio for API requests
 
   Future<List<YogaMusic>> fetchYogaMusic() async {
     // Replace with your actual API endpoint
-    final response = await _dio.get('https://example.com/api/yoga_music'); 
+    final response =
+        await DioClient.dio.get('https://example.com/api/yoga_music');
 
     // Parse the response
     if (response.statusCode == 200) {
@@ -27,7 +28,7 @@ class YogaMusicService {
   }
 
   Future<void> createYogaMusic(YogaMusic yogaMusic) async {
-    await _dio.post('https://example.com/api/yoga_music', data: {
+    await DioClient.dio.post('https://example.com/api/yoga_music', data: {
       'title': yogaMusic.title,
       'artist': yogaMusic.artist,
       'url': yogaMusic.url,
